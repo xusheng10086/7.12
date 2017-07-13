@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		ul,li{
+			list-style: none;
+			padding:0;
+			margin:0;
+		}
+		.box{
+			width:525px;
+			height:525px;
+			border:2px solid #000;
+			background:#0af3e0;
+			margin:20px auto;
+			position: relative;
+			perspective:300px;
+			perspective-origin: center;
+		}
+		li{
+			width:100px;
+			height:100px;
+			background:url(3.jpg);
+			background-size:500px 500px;
+			position:absolute;
+			transform-style:preserve-3d;
+			
+			transition: 1s;
+			z-index:-1;
+		}
+	</style>
+</head>
+<body>
+<input type="button" valus="按钮">
+	<ul class="box">
+		
+	</ul>
+	<script type="text/javascript">
+	
+	var box = document.getElementsByClassName('box')[0];
+	var btn = document.getElementsByTagName('input')[0];
+
+	var n = 0;
+	var obj = null;
+	var x = '',y = '';
+	var arr = [];
+	var m = 0;
+	for(var i=0;i<25;i++){
+		arr.push([]);
+		arr[i].push(i%5*105);
+		arr[i].push(Math.floor(i/5)*105);
+	}
+
+	console.log(arr)
+	arr.sort(function(){
+		return Math.random()-0.5;
+	})
+
+	for(var i=0;i<25;i++){
+		box.innerHTML += '<li style="left:'+arr[i][0]+'px;top:'+arr[i][1]+'px;"></li>';
+		}
+
+	var lis = document.getElementsByTagName('li');
+	for(var i = 0;i<lis.length;i++){
+		lis[i].style.backgroundPositionX = -(i%5*100)+'px'; 
+		lis[i].style.backgroundPositionY = -(Math.floor(i/5)*100)+'px';
+		lis[i].index = i;
+		lis[i].onclick = function (){
+			n++;
+			if(n==1){
+				obj = this;
+				x = this.style.left;
+				y = this.style.top;
+				obj.style.transform = 'scale(1.5)';
+				obj.style.zIndex = '1';
+			}
+			if(n==2){
+				this.style.zIndex = '1';
+				obj.style.left = this.style.left;
+				obj.style.top = this.style.top;
+				this.style.left = x;
+				this.style.top = y;
+				obj.style.transform = '';
+				n=0;
+				setTimeout(function(){
+					for(var i=0;i<lis.length;i++){
+					lis[i].style.zIndex = -1;
+				}
+			},1000)
+				for(var i=0;i<lis.length;i++){
+					if(lis[i].style.left == (i%5*105)+'px'&&lis[i].style.top == (Math.floor(i/5)*105)+'px'){
+						m++;
+					}
+					if(m==25){
+							box.style.background = 'red';
+						}
+				}
+				console.log(m)
+				m=0;
+			}
+		}
+	}
+	btn.onclick = function (){
+		lis[m].style.left = m%5*105+'px';
+		lis[m].style.top = Math.floor(m/5)*105+'px';
+		m++;
+		if(m==25){
+			box.style.background = 'red';
+		}
+			if(m!=25){
+				btn.onclick();
+				m = 0;
+			}
+
+		}
+
+	</script>
+</body>
+</html>
